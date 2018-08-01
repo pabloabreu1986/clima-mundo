@@ -5,10 +5,18 @@ const {getClima} = require('./clima/clima');
 
 console.log(argv.direccion);
 let getInfo = async (direccion) => {
-        let cords = await getLugar(direccion);
-        let temp = await getClima(cords.lat, cords.lng);
 
-        return `El clima en ${cords.direccion} es de ${temp} grados`;
+        try {
+
+                let cords = await getLugar(direccion);
+                let temp = await getClima(cords.lat, cords.lng);
+
+                return `El clima en ${cords.direccion} es de ${temp} grados`;
+                
+        } catch (error) {
+                return `No se pudo determinar el clima en ${direccion}`;
+        }
+        
 }
 
 getInfo(argv.direccion)
