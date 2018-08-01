@@ -1,19 +1,19 @@
 const argv = require('./config/yargs').argv;
 const colors = require('colors');
-const lugar = require('./lugar/lugar');
+const {getLugar} = require('./lugar/lugar');
 const {getClima} = require('./clima/clima');
 
+console.log(argv.direccion);
+let getInfo = async (direccion) => {
+        let cords = await getLugar(direccion);
+        let temp = await getClima(cords.lat, cords.lng);
 
-let encodedUrl = encodeURI(argv.direccion);
+        return `El clima en ${cords.direccion} es de ${temp} grados`;
+}
 
-lugar.get(encodedUrl)
-        .then(result => {
-                console.log(result);
-                getClima(result.lat, result.lng)
-                        .then(res => console.log(res.data.main))
-                        .catch(e => console.log(e))
-        })
-        .catch(e => console.log(e))
+getInfo(argv.direccion)
+        .then(res => console.log(res))
+        .catch(e => console.log(e));
 
 
 

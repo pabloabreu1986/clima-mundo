@@ -9,7 +9,7 @@ let getClima = async (lat, lng) => {
     if (resp.data.status === 'ZARO_RESULTS') {
         throw new Error(`No hay datos del clima`);
     } else {
-        return resp
+        return resp.data.main.temp;
     }
 }
 

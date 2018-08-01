@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-let get = async (direccion) => {
+let getLugar = async (direccion) => {
    
     let resp = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${ direccion }&key=AIzaSyA-HXVa2jtkGfKtIJwisxgC46RaWqC1xuI`)
     
@@ -19,9 +19,5 @@ let get = async (direccion) => {
 }
 
 module.exports = {
-    get
-}
-
-module.exports = {
-    get
+    getLugar
 }
