@@ -1,20 +1,25 @@
 const axios = require('axios');
 
-let get = (encodedUrl) => {
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${ encodedUrl }&key=AIzaSyA-HXVa2jtkGfKtIJwisxgC46RaWqC1xuI`)
-    .then((res) => {
-        if (res.data.results.length == 0) {
-            console.log(res.status, res.data.results);
-        } else {
-            console.log(`============DATA============`.green);
-            console.log(`Dirección: ${ res.data.results[0].formatted_address }`);
-            console.log(`Longitud: ${ res.data.results[0].geometry.location.lat }`);
-            console.log(`Latitud: ${ res.data.results[0].geometry.location.lng }`);
-            console.log(`============================`.green);
+let get = async (direccion) => {
+   
+    let resp = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${ direccion }&key=AIzaSyA-HXVa2jtkGfKtIJwisxgC46RaWqC1xuI`)
+    
+    if (resp.data.status === 'ZARO_RESULTS') {
+        throw new Error(`No hay datos para la ciudad ${ direccion }`);
+    } else {
+        let location = resp.data.results[0];
+        let cors = location.geometry.location;
+
+        return {
+            direccion: location.formatted_address,
+            lat: cors.lat,
+            lng: cors.lng
         }
-        
-    })
-    .catch(e => console.log('Error: ', e))
+    }
+}
+
+module.exports = {
+    get
 }
 
 module.exports = {
